@@ -5,6 +5,7 @@ import com.web.domain.User;
 import com.web.domain.enums.SocialType;
 import com.web.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -29,14 +30,11 @@ import static com.web.domain.enums.SocialType.FACEBOOK;
 import static com.web.domain.enums.SocialType.GOOGLE;
 import static com.web.domain.enums.SocialType.KAKAO;
 
+@RequiredArgsConstructor
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private UserRepository userRepository;
-
-    public UserArgumentResolver(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -57,6 +55,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
                 Map<String, Object> map = authentication.getPrincipal().getAttributes();
                 User convertUser = convertUser(authentication.getAuthorizedClientRegistrationId(), map);
 
+                if (convertUser == null) throw new RuntimeException("Not supported Login");
                 user = userRepository.findByEmail(convertUser.getEmail());
                 if (user == null) { user = userRepository.save(convertUser); }
 

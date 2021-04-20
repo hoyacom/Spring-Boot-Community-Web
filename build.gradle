@@ -1,40 +1,36 @@
-buildscript {
-	ext {
-		springBootVersion = '2.0.3.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+plugins {
+	id "java"
+	id "eclipse"
+	id "org.springframework.boot" version "2.0.3.RELEASE"
+	id "io.freefair.lombok" version "6.0.0-m2"
+	id "io.spring.dependency-management" version "1.0.11.RELEASE"
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
 
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	jcenter()
+	google()
+}
+
+group 'com.springboot2.book'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
-repositories {
-	mavenCentral()
-}
-
-ext['json-path.version'] = '2.2.1'
+//ext['json-path.version'] = '2.2.1'
 
 dependencies {
-	compile('org.springframework.security:spring-security-oauth2-client')
-	compile('org.springframework.security:spring-security-oauth2-jose')
-    compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	
-	runtime('com.h2database:h2')
-	//runtime('mysql:mysql-connector-java')
-	runtime('org.springframework.boot:spring-boot-devtools')
-	compileOnly('org.projectlombok:lombok')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	implementation 'org.springframework.security:spring-security-oauth2-client'
+	implementation 'org.springframework.security:spring-security-oauth2-jose'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.h2database:h2'
+	//runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+	compileOnly 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
